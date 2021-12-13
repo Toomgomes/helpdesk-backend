@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Profile;
 import com.valdir.helpdesk.services.DBService;
 
 @Configuration
-@Profile("Dev")
+@Profile("dev")
 public class DevConfig {
 	
 	@Autowired
