@@ -1,5 +1,6 @@
 package com.valdir.helpdesk.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +10,6 @@ import com.valdir.helpdesk.domain.Tecnico;
 import com.valdir.helpdesk.repositories.TecnicoRepository;
 import com.valdir.helpdesk.services.exceptions.ObjectnotFoundException;
 
-import javassist.tools.rmi.ObjectNotFoundException;
-
 @Service
 public class TecnicoService {
 	
@@ -19,7 +18,11 @@ public class TecnicoService {
 	
 	public Tecnico findById(Integer id) {
 		Optional<Tecnico> obj = repository.findById(id);
-		return obj.orElseThrow(() -> new ObjectnotFoundException("Objeto não encontrado! Id: " +id ));
+		return obj.orElseThrow(() -> new ObjectnotFoundException("Objeto não encontrado! Id: " + id));
+	}
+
+	public List<Tecnico> findAll() {
+		return repository.findAll();
 	}
 
 }
