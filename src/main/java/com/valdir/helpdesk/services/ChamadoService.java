@@ -1,6 +1,5 @@
 package com.valdir.helpdesk.services;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,22 +23,21 @@ public class ChamadoService {
 	@Autowired
 	private ChamadoRepository repository;
 	@Autowired
-	private TecnicoService tecnicoservice;
+	private TecnicoService tecnicoService;
 	@Autowired
-	private ClienteService clienteservice;
-	
-	
+	private ClienteService clienteService;
+
 	public Chamado findById(Integer id) {
 		Optional<Chamado> obj = repository.findById(id);
-		return obj.orElseThrow(() -> new ObjectnotFoundException("Objeto não encontrado! ID: " +id));
+		return obj.orElseThrow(() -> new ObjectnotFoundException("Objeto não encontrado! ID: " + id));
 	}
 
 	public List<Chamado> findAll() {
 		return repository.findAll();
 	}
 
-	public Chamado create(@Valid ChamadoDTO objDTO) {
-		return repository.save(newChamado(objDTO));
+	public Chamado create(ChamadoDTO obj) {
+		return repository.save(newChamado(obj));
 	}
 
 	public Chamado update(Integer id, @Valid ChamadoDTO objDTO) {
@@ -48,12 +46,10 @@ public class ChamadoService {
 		oldObj = newChamado(objDTO);
 		return repository.save(oldObj);
 	}
-	
 
-	
 	private Chamado newChamado(ChamadoDTO obj) {
-		Tecnico tecnico = tecnicoservice.findById(obj.getTecnico());
-		Cliente cliente = clienteservice.findById(obj.getCliente());
+		Tecnico tecnico = tecnicoService.findById(obj.getTecnico());
+		Cliente cliente = clienteService.findById(obj.getCliente());
 		
 		Chamado chamado = new Chamado();
 		if(obj.getId() != null) {
@@ -61,10 +57,9 @@ public class ChamadoService {
 		}
 		
 		if(obj.getStatus().equals(2)) {
-			chamado.setDatafechamento(LocalDate.now());
+			chamado.setDatafechamento(null);
 		}
-			
-			
+		
 		chamado.setTecnico(tecnico);
 		chamado.setCliente(cliente);
 		chamado.setPrioridade(Prioridade.toEnum(obj.getPrioridade()));
@@ -73,6 +68,5 @@ public class ChamadoService {
 		chamado.setObservacoes(obj.getObservacoes());
 		return chamado;
 	}
-
 
 }
